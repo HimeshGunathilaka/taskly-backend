@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Create _work directory
-        run: mkdir -p /home/ubuntu/actions_runner/_work
+        run: sudo mkdir -p /home/ubuntu/actions_runner/_work
 
       - name: Clone Repository into _work
         uses: actions/checkout@v4
