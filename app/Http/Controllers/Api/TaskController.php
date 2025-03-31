@@ -13,6 +13,7 @@ class TaskController extends Controller
             $validated = $request->validate([
                 'user_id'   => 'required|exists:users,id',
                 'title'     => 'required|string|max:255',
+                'description' => 'max:255',
                 'category'  => 'required|string|max:100',
                 'priority'  => 'required|string|max:50',
                 'status'    => 'required|string|max:50',
@@ -68,7 +69,7 @@ class TaskController extends Controller
             }
 
             $existingTask->update($request->only([
-                'title', 'category', 'status', 'priority', 'date'
+                'title', 'description' ,'category', 'status', 'priority', 'date'
             ]));
     
             return response()->json(['message' => 'Task updated successfully!'], 200);
