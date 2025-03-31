@@ -37,7 +37,7 @@ jobs:
           php-version: '8.4'
 
       - name: Copy .env
-        working-directory: /home/runner/actions_runner/_work/taskly
+        working-directory: /home/runner/actions_runner/_work/taskly_backend
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
@@ -45,15 +45,15 @@ jobs:
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Generate Key
-        working-directory: /home/runner/actions_runner/_work/taskly
+        working-directory: /home/runner/actions_runner/_work/taskly_backend
         run: php artisan key:generate
 
       - name: Set Directory Permissions
-        working-directory: /home/runner/actions_runner/_work/taskly
+        working-directory: /home/runner/actions_runner/_work/taskly_backend
         run: chmod -R 777 storage bootstrap/cache
 
       - name: Run Migrations
-        working-directory: /home/runner/actions_runner/_work/taskly
+        working-directory: /home/runner/actions_runner/_work/taskly_backend
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: taskly
@@ -64,7 +64,7 @@ jobs:
         run: php artisan migrate --force
 
       - name: Execute Tests
-        working-directory: /home/runner/actions_runner/_work/taskly
+        working-directory: /home/runner/actions_runner/_work/taskly_backend
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: taskly
