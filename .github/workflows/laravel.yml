@@ -41,7 +41,7 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
-        working-directory: /home/runner/actions_runner/_work/taskly
+        working-directory: /home/runner/actions_runner/_work/taskly-backend
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Generate Key
