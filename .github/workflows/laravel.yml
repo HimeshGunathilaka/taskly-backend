@@ -23,7 +23,13 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Create _work directory
+        run: mkdir -p /home/runner/actions_runner/_work
+
+      - name: Clone Repository into _work
+        uses: actions/checkout@v4
+        with:
+          path: /home/runner/actions_runner/_work/taskly
 
       - name: Set up PHP
         uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -31,18 +37,23 @@ jobs:
           php-version: '8.4'
 
       - name: Copy .env
+        working-directory: /home/runner/actions_runner/_work/taskly
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
+        working-directory: /home/runner/actions_runner/_work/taskly
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Generate Key
+        working-directory: /home/runner/actions_runner/_work/taskly
         run: php artisan key:generate
 
       - name: Set Directory Permissions
+        working-directory: /home/runner/actions_runner/_work/taskly
         run: chmod -R 777 storage bootstrap/cache
 
       - name: Run Migrations
+        working-directory: /home/runner/actions_runner/_work/taskly
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: taskly
@@ -53,6 +64,7 @@ jobs:
         run: php artisan migrate --force
 
       - name: Execute Tests
+        working-directory: /home/runner/actions_runner/_work/taskly
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: taskly
